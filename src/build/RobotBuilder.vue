@@ -1,33 +1,38 @@
 <template>
   <div class="content">
-    <div class="preview" v-if="robot.showPreview">
-    <CollapsableSection title="Preview">
-      <div class="preview-content">
-        <div class="top-row">
-          <img :src="robot.head.src"/>
-        </div>
-        <div class="middle-row">
-          <img :src="robot.leftArm.src" class="rotate-left"/>
-          <img :src="robot.torso.src"/>
-          <img :src="robot.rightArm.src" class="rotate-right"/>
-        </div>
-        <div class="bottom-row">
-          <img :src="robot.base.src"/>
-        </div>
+    <div v-if="isDataReady">
+      <div class="preview" v-if="showPreview">
+        <CollapsableSection title="Preview">
+          <div class="preview-content">
+            <div class="top-row">
+              <img :src="robot.head.src || ''"/>
+            </div>
+            <div class="middle-row">
+              <img :src="robot.leftArm.src || ''" class="rotate-left"/>
+              <img :src="robot.torso.src || ''"/>
+              <img :src="robot.rightArm.src || ''" class="rotate-right"/>
+            </div>
+            <div class="bottom-row">
+              <img :src="robot.base.src || ''"/>
+            </div>
+          </div>
+          <button class="add-to-cart" @click="addToCart()">Add to cart</button>
+        </CollapsableSection>
       </div>
-      <button class="add-to-cart" @click="addToCart()">Add to cart</button>
-    </CollapsableSection>
+      <div class="top-row">
+        <PartSelector name="head" part="heads" position="top"/>
+      </div>
+      <div class="middle-row">
+        <PartSelector name="leftArm" part="arms" position="left"/>
+        <PartSelector name="torso" part="torsos" position="center"/>
+        <PartSelector name="rightArm" part="arms" position="right"/>
+      </div>
+      <div class="bottom-row">
+        <PartSelector name="base" part="bases" position="bottom"/>
+      </div>
     </div>
-    <div class="top-row">
-      <PartSelector name="head" part="heads" position="top" @update="partUpdated" />
-    </div>
-    <div class="middle-row">
-      <PartSelector name="leftArm" part="arms" position="left" @update="partUpdated" />
-      <PartSelector name="torso" part="torsos" position="center" @update="partUpdated" />
-      <PartSelector name="rightArm" part="arms" position="right" @update="partUpdated" />
-    </div>
-    <div class="bottom-row">
-      <PartSelector name="base" part="bases" position="bottom" @update="partUpdated" />
+    <div v-else class="loading">
+      <h1>Loading...</h1>
     </div>
   </div>
 </template>
@@ -42,35 +47,24 @@ export default {
   data() {
     return {
       saved: true,
-      robot: {
-        showPreview: false,
-        head: null,
-        leftArm: null,
-        rightArm: null,
-        base: null,
-        torso: null,
-      },
+      showPreview: true,
     };
   },
   methods: {
     addToCart() {
-      const { robot } = this;
-      const cost = robot.head.cost
-        + robot.leftArm.cost
-        + robot.rightArm.cost
-        + robot.base.cost
-        + robot.torso.cost;
-      const readyRobot = Object.assign({}, robot, { cost });
-      this.$store.commit('addRobotToCart', readyRobot);
-      this.saved = true;
+      this.$store.dispatch('saveRobot');
     },
-    partUpdated(name, part) {
-      this.robot[name] = part;
-      this.saved = false;
+  },
+  computed: {
+    isDataReady() {
+      return this.$store.state.parts !== null;
+    },
+    robot() {
+      return this.$store.getters.robot;
     },
   },
   mounted() {
-    this.robot.showPreview = true;
+    if (this.isDataReady) this.showPreview = true;
     this.saved = true;
   },
   beforeRouteLeave(to, from, next) {

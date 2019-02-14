@@ -11,13 +11,22 @@
       <li>
         <router-link :to="{name: 'RobotBases'}">Bases</router-link></li>
     </ul>
-    <router-view/>
+    <router-view v-if="isDataReady"/>
+    <div v-else>Loading...</div>
   </div>
 </template>
 
 <script>
 export default {
   name: 'BrowseParts',
+  computed: {
+    store() {
+      return this.$store.state.parts;
+    },
+    isDataReady() {
+      return this.store !== null;
+    },
+  },
 };
 </script>
 

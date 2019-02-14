@@ -29,7 +29,7 @@
       </nav>
     </header>
     <div class="container">
-      <aside class="aside">
+      <aside class="aside" v-show="isSidebarVisible">
         <router-view name="sidebar"/>
       </aside>
       <main>
@@ -43,9 +43,15 @@
 export default {
   name: 'app',
   computed: {
+    isSidebarVisible() {
+      return this.$store.state.sidebar;
+    },
     cart() {
       return this.$store.state.cart.length;
     },
+  },
+  created() {
+    this.$store.dispatch('updateParts');
   },
 };
 </script>
@@ -57,10 +63,11 @@ export default {
   justify-content: center;
 }
 .aside {
-  padding: 30px;
+  padding: 50px 20px;
   background-color: #aaa;
-  width: 10em;
+  max-width: 10em;
   min-height: 300px;
+  overflow: hidden;
 }
 </style>
 

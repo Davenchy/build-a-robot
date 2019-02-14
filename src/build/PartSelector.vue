@@ -8,8 +8,6 @@
 </template>
 
 <script>
-import store from '@/data/parts';
-
 function getPreviousValidIndex(index, length) {
   const deprecatedIndex = index - 1;
   return deprecatedIndex < 0 ? length - 1 : deprecatedIndex;
@@ -24,7 +22,10 @@ export default {
   props: {
     name: {
       type: String,
-      default: 'Robot Part',
+      validator(value) {
+        return ['head', 'leftArm', 'rightArm', 'torso', 'base'].includes(value);
+      },
+      default: 'head',
     },
     part: {
       type: String,
@@ -43,12 +44,15 @@ export default {
       default: 'top',
     },
   },
-  data() {
-    return { selectedPartIndex: 0 };
-  },
   computed: {
+    selectedPartIndex() {
+      return this.$store.state.robot[this.name];
+    },
+    store() {
+      return this.$store.state.parts || {};
+    },
     parts() {
-      return store[this.part];
+      return this.store[this.part];
     },
     selectedPart() {
       return this.parts[this.selectedPartIndex];
@@ -56,28 +60,24 @@ export default {
   },
   methods: {
     selectNextPart() {
-      this.selectedPartIndex = getNextValidIndex(
+      const i = getNextValidIndex(
         this.selectedPartIndex,
         this.parts.length,
       );
-      this.emit();
+      console.log(this.selectedPartIndex, i);
+      this.$store.commit('updateRobot', { name: this.name, partId: i });
     },
     selectPreviousPart() {
-      this.selectedPartIndex = getPreviousValidIndex(
+      const i = getPreviousValidIndex(
         this.selectedPartIndex,
         this.parts.length,
       );
-      this.emit();
-    },
-    emit() {
-      this.$emit('update', this.name, this.selectedPart);
+      console.log(this.selectedPartIndex, i);
+      this.$store.commit('updateRobot', { name: this.name, partId: i });
     },
     showInfo() {
       this.$router.push({ name: 'Parts', params: { id: this.selectedPart.id, partType: this.part } });
     },
-  },
-  created() {
-    this.emit();
   },
 };
 

@@ -11,12 +11,15 @@
 </template>
 
 <script>
-import parts from '@/data/parts';
-
 export default {
   name: 'RobotHeads',
-  data() {
-    return { heads: parts.heads };
+  computed: {
+    store() {
+      return this.$store.state.parts;
+    },
+    heads() {
+      return this.store.heads;
+    },
   },
 };
 </script>

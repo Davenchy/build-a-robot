@@ -16,8 +16,6 @@ import RobotTorsos from '@/parts/browse/RobotTorsos.vue';
 
 // sidebar
 import StandardSidebar from '@/sidebar/SidebarStandard.vue';
-import CartSidebar from '@/sidebar/SidebarCart.vue';
-import BuildSidebar from '@/sidebar/SidebarBuild.vue';
 
 Vue.use(Router);
 
@@ -30,13 +28,19 @@ export default new Router({
         default: HomePage,
         sidebar: StandardSidebar,
       },
+      props: {
+        sidebar: { name: 'Build-a-Robot App' },
+      },
     },
     {
       name: 'Builder',
       path: '/builder',
       components: {
         default: RobotBuilder,
-        sidebar: BuildSidebar,
+        sidebar: StandardSidebar,
+      },
+      props: {
+        sidebar: { name: 'Building Page' },
       },
     },
     {
@@ -44,13 +48,22 @@ export default new Router({
       path: '/cart',
       components: {
         default: CartPage,
-        sidebar: CartSidebar,
+        sidebar: StandardSidebar,
+      },
+      props: {
+        sidebar: { name: 'Robots Cart' },
       },
     },
     {
       name: 'Browse',
       path: '/parts/browse',
-      component: BrowseParts,
+      components: {
+        default: BrowseParts,
+        sidebar: StandardSidebar,
+      },
+      props: {
+        sidebar: { name: 'Browse Robot Parts Store' },
+      },
       children: [
         {
           name: 'RobotHeads',
@@ -77,8 +90,14 @@ export default new Router({
     {
       name: 'Parts',
       path: '/parts/:partType/:id',
-      component: PartInfo,
-      props: true,
+      components: {
+        default: PartInfo,
+        sidebar: StandardSidebar,
+      },
+      props: {
+        default: true,
+        sidebar: { name: 'Selected Part Information' },
+      },
       beforeEnter: (to, from, next) => {
         const isValidId = Number.isInteger(Number(to.params.id));
         next(isValidId);
