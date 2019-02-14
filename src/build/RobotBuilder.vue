@@ -70,6 +70,7 @@ export default {
   components: { PartSelector, CollapsableSection },
   data() {
     return {
+      saved: true,
       cart: [],
       robot: {
         showPreview: false,
@@ -90,14 +91,25 @@ export default {
         + robot.base.cost
         + robot.torso.cost;
       this.cart.push(Object.assign({}, robot, { cost }));
+      this.saved = true;
     },
     partUpdated(name, part) {
       this.robot[name] = part;
+      this.saved = false;
     },
   },
   mounted() {
     this.robot.showPreview = true;
+    this.saved = true;
   },
+  beforeRouteLeave (to, from, next) {
+    if (this.saved) {
+      next(true);
+    } else {
+      const res = confirm('Unsaved work, want to leave?');
+      next(res);
+    }
+  }
 };
 </script>
 

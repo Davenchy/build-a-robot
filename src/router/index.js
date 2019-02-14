@@ -1,15 +1,21 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
+// pages
 import HomePage from '@/home/HomePage.vue';
 import RobotBuilder from '@/build/RobotBuilder.vue';
 import PartInfo from '@/parts/PartInfo.vue';
 
+// manual browser pages
 import BrowseParts from '@/parts/browse/BrowseParts.vue';
 import RobotArms from '@/parts/browse/RobotArms.vue';
 import RobotBases from '@/parts/browse/RobotBases.vue';
 import RobotHeads from '@/parts/browse/RobotHeads.vue';
 import RobotTorsos from '@/parts/browse/RobotTorsos.vue';
+
+// sidebar
+import StandardSidebar from '@/sidebar/SidebarStandard.vue';
+import BuildSidebar from '@/sidebar/SidebarBuild.vue';
 
 Vue.use(Router);
 
@@ -18,12 +24,18 @@ export default new Router({
     {
       name: 'Home',
       path: '/',
-      component: HomePage,
+      components: {
+        default: HomePage,
+        sidebar: StandardSidebar,
+      },
     },
     {
       name: 'Builder',
       path: '/builder',
-      component: RobotBuilder,
+      components: {
+        default: RobotBuilder,
+        sidebar: BuildSidebar,
+      },
     },
     {
       name: 'Browse',
@@ -57,6 +69,10 @@ export default new Router({
       path: '/parts/:partType/:id',
       component: PartInfo,
       props: true,
+      beforeEnter: (to, from, next) => {
+        const isValidId = Number.isInteger(Number(to.params.id));
+        next(isValidId)
+      }
     },
   ],
 });

@@ -22,9 +22,14 @@
         </ul>
       </nav>
     </header>
-    <main>
-      <router-view/>
-    </main>
+    <div class="container">
+      <aside class="aside">
+        <router-view name="sidebar"/>
+      </aside>
+      <main>
+        <router-view/>
+      </main>
+    </div>
   </div>
 </template>
 
@@ -33,6 +38,21 @@ export default {
   name: 'app',
 };
 </script>
+
+<style scoped>
+.container {
+  display: flex;
+  margin:10px auto 0 auto;
+  justify-content: center;
+}
+.aside {
+  padding: 30px;
+  background-color: #aaa;
+  width: 10em;
+  min-height: 300px;
+}
+</style>
+
 
 <style>
 * { box-sizing: border-box; }
@@ -46,7 +66,6 @@ body {
   overflow: hidden;
 }
 main {
-  margin: 0 auto;
   padding: 30px;
   background-color: white;
   width: 100%;
@@ -54,7 +73,7 @@ main {
 }
 header {
   background-color: #999;
-  width: 1084px;
+  width: 100%;
   margin: 0 auto;
 }
 ul {
