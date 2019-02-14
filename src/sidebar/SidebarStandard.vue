@@ -27,7 +27,12 @@ export default {
 
 <style scoped>
 .sidebar {
-  width: 100%;
+  position: absolute;
+  top: 190px;
+  left: -60px;
+  width: 250px;
+  height: 90px;
+  font-size: 25px;
   transform: rotate(90deg);
 }
 </style>

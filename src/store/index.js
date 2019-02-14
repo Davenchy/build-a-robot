@@ -29,7 +29,6 @@ export default new Vuex.Store({
       state.cart.push(Object.assign({}, payload.robot, { cost: payload.cost }));
     },
     updateRobot(state, payload) {
-      console.log(payload);
       state.robot[payload.name] = payload.partId;
       state.unsavedRobot = true;
     },
@@ -64,11 +63,11 @@ export default new Vuex.Store({
       axios.get('http://127.0.0.1:8081/api/parts').then(res => commit('updateParts', res.data)).catch(console.error());
     },
     resetRobot({ commit }) {
-      commit('updateRobot', { name: 'head', part: 0 });
-      commit('updateRobot', { name: 'base', part: 0 });
-      commit('updateRobot', { name: 'torso', part: 0 });
-      commit('updateRobot', { name: 'leftArm', part: 0 });
-      commit('updateRobot', { name: 'rightArm', part: 0 });
+      commit('updateRobot', { name: 'head', partId: 0 });
+      commit('updateRobot', { name: 'base', partId: 0 });
+      commit('updateRobot', { name: 'torso', partId: 0 });
+      commit('updateRobot', { name: 'leftArm', partId: 0 });
+      commit('updateRobot', { name: 'rightArm', partId: 0 });
       commit('savedRobotState', true);
     },
     saveRobot({ commit, getters, dispatch }) {

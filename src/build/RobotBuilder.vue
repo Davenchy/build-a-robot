@@ -187,7 +187,7 @@ export default {
   transform: rotate(90deg);
 }
 .rotate-left {
-  transform: rotate(-90deg);
+  transform: scaleX(-1) rotate(90deg);
 }
 .robot-name {
   position: absolute;

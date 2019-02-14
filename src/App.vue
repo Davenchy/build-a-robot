@@ -65,7 +65,7 @@ export default {
 .aside {
   padding: 50px 20px;
   background-color: #aaa;
-  max-width: 10em;
+  width: 120px;
   min-height: 300px;
   overflow: hidden;
 }

@@ -64,7 +64,6 @@ export default {
         this.selectedPartIndex,
         this.parts.length,
       );
-      console.log(this.selectedPartIndex, i);
       this.$store.commit('updateRobot', { name: this.name, partId: i });
     },
     selectPreviousPart() {
@@ -72,7 +71,6 @@ export default {
         this.selectedPartIndex,
         this.parts.length,
       );
-      console.log(this.selectedPartIndex, i);
       this.$store.commit('updateRobot', { name: this.name, partId: i });
     },
     showInfo() {
