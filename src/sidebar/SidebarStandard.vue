@@ -1,6 +1,6 @@
 <template>
   <div class="sidebar">
-    Standard Sidebar
+    Robot Builder App
   </div>
 </template>
 

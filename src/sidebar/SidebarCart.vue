@@ -1,6 +1,6 @@
 <template>
   <div class="sidebar">
-    Build Page
+    Cart Page
   </div>
 </template>
 

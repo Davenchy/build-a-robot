@@ -5,6 +5,7 @@ import Router from 'vue-router';
 import HomePage from '@/home/HomePage.vue';
 import RobotBuilder from '@/build/RobotBuilder.vue';
 import PartInfo from '@/parts/PartInfo.vue';
+import CartPage from '@/cart/CartPage.vue';
 
 // manual browser pages
 import BrowseParts from '@/parts/browse/BrowseParts.vue';
@@ -15,6 +16,7 @@ import RobotTorsos from '@/parts/browse/RobotTorsos.vue';
 
 // sidebar
 import StandardSidebar from '@/sidebar/SidebarStandard.vue';
+import CartSidebar from '@/sidebar/SidebarCart.vue';
 import BuildSidebar from '@/sidebar/SidebarBuild.vue';
 
 Vue.use(Router);
@@ -35,6 +37,14 @@ export default new Router({
       components: {
         default: RobotBuilder,
         sidebar: BuildSidebar,
+      },
+    },
+    {
+      name: 'Cart',
+      path: '/cart',
+      components: {
+        default: CartPage,
+        sidebar: CartSidebar,
       },
     },
     {
@@ -71,8 +81,8 @@ export default new Router({
       props: true,
       beforeEnter: (to, from, next) => {
         const isValidId = Number.isInteger(Number(to.params.id));
-        next(isValidId)
-      }
+        next(isValidId);
+      },
     },
   ],
 });

@@ -1,16 +1,4 @@
 <template>
-  <!--
-    Right: &#9658;
-    Left: &#9668;
-    Up: &#9650;
-    Down: &#9660;
-  -->
-  <!-- <div class="top part">
-    <div class="robot-name">
-      {{ robot.head.title }}
-      <span class="sales" v-show="robot.head.onSale">Sales!</span>
-    </div>
-  </div> -->
   <div class="content">
     <div class="preview" v-if="robot.showPreview">
     <CollapsableSection title="Preview">
@@ -41,23 +29,6 @@
     <div class="bottom-row">
       <PartSelector name="base" part="bases" position="bottom" @update="partUpdated" />
     </div>
-    <div class="cart">
-        <h1>Cart:</h1>
-        <table>
-          <thead>
-            <tr>
-              <th>Robot</th>
-              <th>Cost</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(bot, key) in cart" :key="key">
-              <td>{{ bot.head.title }}</td>
-              <td class="cart-cost">{{ bot.cost }}</td>
-            </tr>
-          </tbody>
-        </table>
-    </div>
   </div>
 </template>
 
@@ -71,7 +42,6 @@ export default {
   data() {
     return {
       saved: true,
-      cart: [],
       robot: {
         showPreview: false,
         head: null,
@@ -90,7 +60,8 @@ export default {
         + robot.rightArm.cost
         + robot.base.cost
         + robot.torso.cost;
-      this.cart.push(Object.assign({}, robot, { cost }));
+      const readyRobot = Object.assign({}, robot, { cost });
+      this.$store.commit('addRobotToCart', readyRobot);
       this.saved = true;
     },
     partUpdated(name, part) {
@@ -102,14 +73,15 @@ export default {
     this.robot.showPreview = true;
     this.saved = true;
   },
-  beforeRouteLeave (to, from, next) {
+  beforeRouteLeave(to, from, next) {
     if (this.saved) {
       next(true);
     } else {
+      // eslint-disable-next-line
       const res = confirm('Unsaved work, want to leave?');
       next(res);
     }
-  }
+  },
 };
 </script>
 
@@ -243,13 +215,5 @@ export default {
   width: 100%;
   padding: 3px;
   font-size: 16px;
-}
-td, th {
-  text-align: left;
-  padding: 5px;
-  padding-right: 20px;
-}
-.cart-cost {
-  text-align: right;
 }
 </style>
